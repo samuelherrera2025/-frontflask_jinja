@@ -8,7 +8,7 @@ import requests
 rutas_productos = Blueprint("rutas_productos", __name__)
 
 # URL base de la API en C# que gestiona los productos
-API_URL = "http://localhost:5031/api/producto"
+API_URL = "http://localhost:5000/api/producto"
 
 # ------------------- LISTAR productos -------------------
 @rutas_productos.route("/productos")
@@ -19,6 +19,7 @@ def productos():
     """
     try:
         respuesta = requests.get(API_URL)
+        print("Respuesta de la API:", respuesta.text)
         productos = respuesta.json().get("datos", [])
     except Exception as e:
         productos = []

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block contenido %}
+<h1>Gestión de Vendedores</h1>
+
+<form method="post" action="{{ url_for('rutas_vendedores.crear_vendedor') if modo == 'crear' else url_for('rutas_vendedores.actualizar_vendedor') }}">
+    <input type="hidden" name="id" value="{{ vendedor.id if vendedor else '' }}">
+    <input type="number" name="carnet" placeholder="Carnet" value="{{ vendedor.carnet if vendedor else '' }}" required>
+    <input type="text" name="direccion" placeholder="Dirección" value="{{ vendedor.direccion if vendedor else '' }}" required>
+    <input type="text" name="fkcodpersona" placeholder="Código persona" value="{{ vendedor.fkcodpersona if vendedor else '' }}" required>
+    <button type="submit">{{ "Crear" if modo == "crear" else "Actualizar" }}</button>
+</form>
+
+<form method="post" action="{{ url_for('rutas_vendedores.buscar_vendedor') }}">
+    <input type="text" name="codigo_buscar" placeholder="Buscar por id">
+    <button type="submit">Buscar</button>
+</form>
+
+{% if mensaje %}<p style="color:red;">{{ mensaje }}</p>{% endif %}
+
+<table border="1" cellpadding="5" cellspacing="0" style="margin:20px auto;">
+<thead>
+<tr><th>ID</th><th>Carnet</th><th>Dirección</th><th>fkcodpersona</th><th>Acciones</th></tr>
+</thead>
+<tbody>
+{% for v in vendedores %}
+<tr>
+  <td>{{ v.id }}</td>
+  <td>{{ v.carnet }}</td>
+  <td>{{ v.direccion }}</td>
+  <td>{{ v.fkcodpersona }}</td>
+  <td>
+    <form method="post" action="{{ url_for('rutas_vendedores.eliminar_vendedor', idv=v.id) }}">
+      <button type="submit">Eliminar</button>
+    </form>
+  </td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock %}

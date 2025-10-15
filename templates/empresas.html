@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block contenido %}
+<h1>Gestión de Empresas</h1>
+
+<form method="post" action="{{ url_for('rutas_empresas.crear_empresa') if modo == 'crear' else url_for('rutas_empresas.actualizar_empresa') }}">
+    <input type="text" name="codigo" placeholder="Código" value="{{ empresa.codigo if empresa else '' }}" required>
+    <input type="text" name="nombre" placeholder="Nombre" value="{{ empresa.nombre if empresa else '' }}" required>
+    <button type="submit">{{ "Crear" if modo == "crear" else "Actualizar" }}</button>
+</form>
+
+<form method="post" action="{{ url_for('rutas_empresas.buscar_empresa') }}">
+    <input type="text" name="codigo_buscar" placeholder="Buscar por código">
+    <button type="submit">Buscar</button>
+</form>
+
+{% if mensaje %}<p style="color:red;">{{ mensaje }}</p>{% endif %}
+
+<table border="1" cellpadding="5" cellspacing="0" style="margin:20px auto;">
+<thead>
+<tr><th>Código</th><th>Nombre</th><th>Acciones</th></tr>
+</thead>
+<tbody>
+{% for e in empresas %}
+<tr>
+  <td>{{ e.codigo }}</td>
+  <td>{{ e.nombre }}</td>
+  <td>
+    <form method="post" action="{{ url_for('rutas_empresas.eliminar_empresa', codigo=e.codigo) }}">
+      <button type="submit">Eliminar</button>
+    </form>
+  </td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock %}
